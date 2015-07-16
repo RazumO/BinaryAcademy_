@@ -58,6 +58,6 @@ angular.module('app', ['ngResource'])
 			console.log(vm.tenPhotos);
 	 	}
 
-	 	httpService.takePhotos(handleSuccess);
-	 	//resourceService.takePhotos(handleSuccess);
+	 	//httpService.takePhotos(handleSuccess);
+	 	resourceService.takePhotos(handleSuccess);
 	});
