@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Testing REST</title>
+</head>
+<body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script type="text/javascript">
+		$.ajax({
+		    url: 'http://localhost:8000/restapi/country',
+		    type: 'POST',
+		    data: '{"Name":"SomeCountry", "Description":"Best neighbour of Ukraine"}',
+		    success: function(result) {
+		        // Do something with the result
+		        console.log(result);
+		    }
+		});
+
+		// $.ajax({
+		//     url: 'http://localhost:8000/restapi/country/Poland/hotel',
+		//     type: 'POST',
+		//     data: '{"Name":"Lviv hotel", "Description":"Lviv traditions in Poland"}',
+		//     success: function(result) {
+		//         // Do something with the result
+		//         console.log(result);
+		//     }
+		// });
+	</script>
+</body>
+</html>
