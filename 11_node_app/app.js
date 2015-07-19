@@ -44,8 +44,14 @@ fs.readFile('index.html', function (err, data) {
   indexHTML = data.toString('utf8');
 });
 
-var hotelsArray;
+//Обновляю данные каждые 20 секунд
+setInterval(function () {
+	fs.writeFile('countries.json', JSON.stringify(countries));
+	fs.writeFile('hotels.json', JSON.stringify(hotels));
+}, 20000);
 
+var hotelsArray;
+var countriesArray;
 
 
 var server = http.createServer(function (req, res) {
@@ -56,7 +62,7 @@ var server = http.createServer(function (req, res) {
 	if (method == "GET") {
 		if (url == '/') {
 			res.writeHead(200, {
-				'Content-Type': 'text/html' //тут можна тестити
+				'Content-Type': 'text/html' //тут написані AJAX запти для тестування
 			});
 			res.write(indexHTML);
 		} else if (index = url.match(/^\/restapi\/hotel\/([1234567890]*)$/)) {
@@ -99,6 +105,37 @@ var server = http.createServer(function (req, res) {
 		    });
 		}
 		
+	} else if (method == 'DELETE') {
+		if (index = url.match(/^\/restapi\/hotel\/([1234567890]*)$/)) {
+			hotelsArray = _(hotels).toArray();
+			var hotelIndexToRemove = _.findIndex(hotelsArray, matchId, {ID: index[1]});
+			console.log("Old " + hotelIndexToRemove + ' element' ,hotels[hotelIndexToRemove]);
+			hotelsArray.splice(hotelIndexToRemove, 1);
+			hotels =  JSON.parse(JSON.stringify(hotelsArray));
+			console.log("New " + hotelIndexToRemove + ' element', hotels[hotelIndexToRemove]);
+		}
+	} else if (method == 'PUT') {
+		if (index = url.match(/^\/restapi\/hotel\/([1234567890]*)$/)) {
+			req.on('data', function(chunk) {
+				hotelsArray = _(hotels).toArray();
+				var hotelIndexToUpdate = _.findIndex(hotelsArray, matchId, {ID: index[1]});
+				console.log("Old " + hotelIndexToUpdate + ' element' ,hotels[hotelIndexToUpdate]);
+				var hotelToUpdate = hotelsArray[hotelIndexToUpdate];
+				var jsonObj = JSON.parse(chunk);
+				if(jsonObj.Name) {
+					hotelToUpdate.Name = jsonObj.Name;
+				}
+				if(jsonObj.Description) {
+					hotelToUpdate.Description = jsonObj.Description;
+				}
+				if(jsonObj.Country) {
+					hotelToUpdate.Country = jsonObj.Country;
+				}
+
+				hotels =  JSON.parse(JSON.stringify(hotelsArray));
+				console.log("New " + hotelIndexToUpdate + ' element', hotels[hotelIndexToUpdate]);		
+			});
+		}
 	}
 	res.end();
 });
@@ -111,4 +148,9 @@ console.log('Listening port 8000...');
 function matchCountry (element) {
 	return (element.Country == this.country);
 }
+
+function matchId (element) {
+	return (element.ID == this.ID);
+}
+
 

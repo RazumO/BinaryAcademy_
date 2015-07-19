@@ -6,15 +6,15 @@
 <body>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script type="text/javascript">
-		$.ajax({
-		    url: 'http://localhost:8000/restapi/country',
-		    type: 'POST',
-		    data: '{"Name":"SomeCountry", "Description":"Best neighbour of Ukraine"}',
-		    success: function(result) {
-		        // Do something with the result
-		        console.log(result);
-		    }
-		});
+		// $.ajax({
+		//     url: 'http://localhost:8000/restapi/country',
+		//     type: 'POST',
+		//     data: '{"Name":"SomeCountry", "Description":"Best neighbour of Ukraine"}',
+		//     success: function(result) {
+		//         // Do something with the result
+		//         console.log(result);
+		//     }
+		// });
 
 		// $.ajax({
 		//     url: 'http://localhost:8000/restapi/country/Poland/hotel',
@@ -25,6 +25,25 @@
 		//         console.log(result);
 		//     }
 		// });
+
+		// $.ajax({
+		//     url: 'http://localhost:8000/restapi/hotel/13',
+		//     type: 'DELETE',
+		//     success: function(result) {
+		//         // Do something with the result
+		//         console.log(result);
+		//     }
+		// });
+
+		$.ajax({
+		    url: 'http://localhost:8000/restapi/hotel/14',
+		    type: 'PUT',
+		    data: '{"Name":"Lviv Hilton", "Description":"Lviv Hilton"}',
+		    success: function(result) {
+		        // Do something with the result
+		        console.log(result);
+		    }
+		});
 	</script>
 </body>
 </html>
