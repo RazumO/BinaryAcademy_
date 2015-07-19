@@ -1,0 +1,17 @@
+{
+  "name": "express_project",
+  "version": "1.1.1",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "casual": "^1.4.7",
+    "express": "^4.13.1",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
