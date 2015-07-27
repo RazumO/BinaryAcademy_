@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>web sockets</title>
+	<style>
+		ul {
+			list-style-type: none;
+			padding-left: 0px;
+		}
+		#nameInput {
+			margin-top: 5px;
+		}
+
+		#messageSubmit {
+			width: 100px;
+			height: 24px;
+			font-size: 16px;
+		}
+	</style>
+</head>
+<body>
+	<div id="messege">
+		<form>
+			<p><input id="nameInput" type="text" placeholder="Your name:"></p>
+			<p><textarea id="text" cols="30" rows="10" placeholder="Enter yor message"required></textarea></p>
+			<!-- <button id="messageSubmit">Send</button> -->
+			<p><input id="messageSubmit" type="submit" value = "Send"></p>
+		</form>
+	</div>
+	<ul id="messages"></ul>
+
+</body>
+<script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script type="text/javascript">
+	(function () {
+	var nameInput = $('#nameInput'),
+		text = $('#text'),
+		messageSubmit = $('#messageSubmit'),
+		messages = $('#messages');
+	var userName = 'Anonim';
+	var socket = io.connect();
+
+	var options = {
+	  //era: 'long',
+	  year: 'numeric',
+	  month: 'numeric',
+	  day: 'numeric',
+	  //weekday: 'long',
+	  timezone: 'UTC',
+	  hour: 'numeric',
+	  minute: 'numeric'
+	  //second: 'numeric'
+	};
+
+	messageSubmit.on('click', function () {
+		var curTime = Date.now();
+		var data = {
+			name: nameInput.val() || userName,
+			text: text.val(),
+			date: curTime
+		};
+		text.val('');
+		socket.emit('chat message', data);
+	});
+
+	socket.on('chat history', function (msg) {
+		for (var i in msg) {
+			if (msg.hasOwnProperty(i)) {
+				var newDate = new Date(msg[i].date);
+				var localDate = newDate.toLocaleString("ru", options);
+				messages.append($('<li>').html('<span style="color: #0DF032">' + localDate + '</span> ' + '<b>' + msg[i].name + ': </b>' + msg[i].text));
+			}
+		}
+	});
+
+	socket.on('chat message', function (msg) {
+		var newDate = new Date(msg.date);
+		var localDate = newDate.toLocaleString("ru", options);
+		messages.append($('<li>').html('<span style="color: #0DF032">' + localDate + '</span> ' + '<b>' + msg.name + ': </b>' + msg.text));
+	});
+
+
+})();
+</script>
+</html>
